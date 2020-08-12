@@ -1,21 +1,18 @@
 from rest_framework import viewsets, mixins
 
-<<<<<<< HEAD
+
 from recipe.models import Tag, Ingredient, Recipe
 
 from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, RecipeDetailSerializer
-=======
+
 from recipe.models import Tag, Ingredient
 
 from .serializers import TagSerializer, IngrediantSerializer
->>>>>>> 327014df862c711b0ca6f00a27b6774d6190b9fc
+
 
 from rest_framework.permissions import IsAuthenticated
 
 from rest_framework.authentication import TokenAuthentication
-
-
-<<<<<<< HEAD
 
 
 class BaseRecipeAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
@@ -55,7 +52,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-=======
+
 
 
 class BaseRecipeAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin):
@@ -79,7 +76,3 @@ class TagViewSet(BaseRecipeAttrViewSet):
 class IngredientViewSet(BaseRecipeAttrViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngrediantSerializer
-
-
-    
->>>>>>> 327014df862c711b0ca6f00a27b6774d6190b9fc

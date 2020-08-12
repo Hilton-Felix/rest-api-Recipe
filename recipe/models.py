@@ -28,10 +28,7 @@ class Recipe(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     time_minutes = models.IntegerField()
-<<<<<<< HEAD
-=======
     price = models.DecimalField(max_digits=5, decimal_places=2)
->>>>>>> 327014df862c711b0ca6f00a27b6774d6190b9fc
     link = models.CharField(max_length=255, blank=True)
     ingredients = models.ManyToManyField('Ingredient')
     tags = models.ManyToManyField('Tag')
