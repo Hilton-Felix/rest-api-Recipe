@@ -35,9 +35,11 @@ class RecipeSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'title',
+            'price',
             'time_minutes',
             'ingredients',
             'tags',
+            'image',
             'created_at',
             'updated_at'
         )
@@ -51,5 +53,4 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 class RecipeDetailSerializer(RecipeSerializer):
     ingredients = IngredientSerializer(many=True)
-    tags = TagSerializer(many=True)
-
+    tags = TagSerializer(many=True) 

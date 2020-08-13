@@ -1,7 +1,14 @@
 from django.db import models
 from django.conf import settings
 
+# images
+import uuid
+import os
+
+
+
 # Create your models here.
+
 
 
 class Tag(models.Model):
@@ -24,6 +31,12 @@ class Ingredient(models.Model):
 
 
 
+def recipe_image_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f"{uuid.uuid4()}.{ext}"
+    return os.path.join('uploads/recipe/', filename)
+
+
 class Recipe(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
@@ -32,6 +45,7 @@ class Recipe(models.Model):
     link = models.CharField(max_length=255, blank=True)
     ingredients = models.ManyToManyField('Ingredient')
     tags = models.ManyToManyField('Tag')
+    image = models.ImageField(blank=True, null=True, upload_to=recipe_image_file_path)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
