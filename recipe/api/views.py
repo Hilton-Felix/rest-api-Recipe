@@ -1,13 +1,6 @@
-from rest_framework import viewsets, mixins
+from rest_framework import viewsets, mixins, status
 
-
-from recipe.models import Tag, Ingredient, Recipe
-
-from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, RecipeDetailSerializer, RecipeImageSerializer
-
-from rest_framework.permissions import IsAuthenticated
-
-from .permissions import isAuthorOrReadOnly
+from rest_framework.filters import SearchFilter
 
 from rest_framework.authentication import TokenAuthentication
 
@@ -15,7 +8,17 @@ from rest_framework.decorators import action
 
 from rest_framework.response import Response
 
-from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+
+
+from recipe.models import Tag, Ingredient, Recipe
+
+from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, RecipeDetailSerializer, RecipeImageSerializer
+
+
+from .permissions import isAuthorOrReadOnly
+
+
 
 
 class BaseRecipeAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin):
@@ -34,19 +37,29 @@ class BaseRecipeAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixi
 class TagViewSet(BaseRecipeAttrViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    filterset_fields = {
+        'name': ['startswith']
+    }
 
 
 class IngredientViewSet(BaseRecipeAttrViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-
-
+    filterset_fields = {
+        'name': ['startswith', 'lte']
+    }
+    
+    
 
 class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = [ IsAuthenticated, isAuthorOrReadOnly ]
     authentication_classes = [ TokenAuthentication ]
+    filterset_fields = {
+        'title': ['startswith'],
+    }
+
 
     def get_serializer_class(self):
         if self.action == 'retrieve':
@@ -56,7 +69,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
             return RecipeImageSerializer
         return self.serializer_class
 
-   
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
