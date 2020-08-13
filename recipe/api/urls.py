@@ -10,6 +10,7 @@ router.register('list', views.RecipeViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('list/<int:pk>/like/', views.LikeRecipeAPIView.as_view(), name='like-recipe')
 ]
 
 

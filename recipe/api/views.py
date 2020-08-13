@@ -10,13 +10,14 @@ from rest_framework.response import Response
 
 from rest_framework.permissions import IsAuthenticated
 
-
 from recipe.models import Tag, Ingredient, Recipe
 
 from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, RecipeDetailSerializer, RecipeImageSerializer
 
-
 from .permissions import isAuthorOrReadOnly
+
+from rest_framework.views import APIView
+from rest_framework.generics import get_object_or_404
 
 
 
@@ -85,4 +86,37 @@ class RecipeViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+class LikeRecipeAPIView(APIView):
+    serializer_class = RecipeSerializer
+    permission_classes = [ IsAuthenticated ]
+
+    def post(self, request, pk):
+        recipe = get_object_or_404(Recipe, pk=pk)
+        user = request.user
+        recipe.likes.add(user)
+        recipe.save()
+
+        serializer_context = {'request': request}
+        serializer = self.serializer_class(recipe, context=serializer_context)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def delete(self, request, pk):
+        recipe = get_object_or_404(Recipe, pk=pk)
+        user = request.user
+        recipe.likes.remove(user)
+        recipe.save()
+
+        serializer_context = {'request': request}
+        serializer = self.serializer_class(recipe, context=serializer_context)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        
+
+
 

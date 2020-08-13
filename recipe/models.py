@@ -46,9 +46,14 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField('Ingredient')
     tags = models.ManyToManyField('Tag')
     image = models.ImageField(blank=True, null=True, upload_to=recipe_image_file_path)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 
     def __str__(self):
         return self.title
+
+
+class Votes(models.Model):
+    vote = models.IntegerField()

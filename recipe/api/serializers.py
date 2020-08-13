@@ -25,6 +25,7 @@ class RecipeSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     created_at = serializers.SerializerMethodField()
     updated_at = serializers.SerializerMethodField()
+    likes = serializers.SerializerMethodField()
 
     ingredients = serializers.PrimaryKeyRelatedField(many=True, queryset=Ingredient.objects.all())
     tags = serializers.PrimaryKeyRelatedField(many=True, queryset=Tag.objects.all())
@@ -37,6 +38,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'title',
             'price',
             'time_minutes',
+            'likes',
             'ingredients',
             'tags',
             'image',
@@ -49,6 +51,9 @@ class RecipeSerializer(serializers.ModelSerializer):
     
     def get_updated_at(self, instance):
         return instance.updated_at.strftime('%B %d, %Y')
+
+    def get_likes(self, instance):
+        return instance.likes.count()
 
 
 class RecipeDetailSerializer(RecipeSerializer):
