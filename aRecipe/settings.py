@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'taggit',
     'taggit_serializer',
@@ -48,6 +49,15 @@ INSTALLED_APPS = [
     'django_filters',
 
     'rest_auth',
+    'rest_auth.registration',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+
+
+    'crispy_forms',
 
 ]
 
@@ -66,7 +76,7 @@ ROOT_URLCONF = 'aRecipe.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,6 +135,11 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_URL = 'accounts/login'
+LOGIN_REDIRECT_URL = '/'
+lOGOUT_REDIRECT_URL =  '/'
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -140,12 +155,30 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'profiles.User'
 
 
+# DJANGO REST_FRAMEWORK
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
-    ],
+    ),
      'DEFAULT_FILTER_BACKENDS': (
          'django_filters.rest_framework.DjangoFilterBackend',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+SITE_ID = 1
+ACCOUNT_EMAIL_VERIFICATION = 'none' 
+ACCOUNT_EMAIL_REQUIRED = (True)
+
+
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
+
+ACCOUNT_ACTIVATION_DAYS = 7

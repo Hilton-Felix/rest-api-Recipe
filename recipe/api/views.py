@@ -27,8 +27,7 @@ from rest_framework.exceptions import ValidationError
 
 class BaseRecipeAttrViewSet(viewsets.GenericViewSet, mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin):
     permission_classes = [ IsAuthenticated ]
-    authentication_classes = [ TokenAuthentication ] 
-    
+        
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user).order_by('-name')
 
@@ -59,7 +58,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = [ IsAuthenticated, isAuthorOrReadOnly ]
-    authentication_classes = [ TokenAuthentication ]
     filterset_fields = {
         'title': ['startswith'],
     }
