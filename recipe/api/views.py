@@ -1,4 +1,4 @@
-from rest_framework import viewsets, mixins, status
+from rest_framework import viewsets, mixins, status, generics
 
 from rest_framework.filters import SearchFilter
 
@@ -10,14 +10,17 @@ from rest_framework.response import Response
 
 from rest_framework.permissions import IsAuthenticated
 
-from recipe.models import Tag, Ingredient, Recipe
+from recipe.models import Tag, Ingredient, Recipe, Comment
 
-from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, RecipeDetailSerializer, RecipeImageSerializer
+from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, RecipeDetailSerializer, RecipeImageSerializer, CommentSerializer
 
 from .permissions import isAuthorOrReadOnly
 
 from rest_framework.views import APIView
+
 from rest_framework.generics import get_object_or_404
+
+from rest_framework.exceptions import ValidationError
 
 
 
@@ -119,4 +122,38 @@ class LikeRecipeAPIView(APIView):
         
 
 
+
+
+
+
+class CreateCommentAPIView(generics.CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [ IsAuthenticated ]
+
+
+
+    def perform_create(self, serializer):
+        pk = self.kwargs.get('pk')
+        recipe = get_object_or_404(Recipe, pk=pk)
+        serializer.save(user=self.request.user, recipe=recipe)
+
+
+
+class SingleRecipeCommentListAPIView(generics.ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [ IsAuthenticated ]
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+        return Comment.objects.filter(recipe__id=pk).order_by('-created_at')
+
+
+
+class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [ IsAuthenticated, isAuthorOrReadOnly ]
+    lookup_field = 'id'
 
