@@ -19,7 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 # from django_registration.backends.one_step.views import RegistrationView
-from django_registration.backends.one_step.views import RegistrationView
+from django_registration.backends.activation.views import RegistrationView
 from profiles.forms import CustomUserForm
 
 urlpatterns = [
@@ -49,11 +49,12 @@ urlpatterns = [
     # registration via browser
     path('accounts/register/', RegistrationView.as_view(
         form_class = CustomUserForm,
-        success_url = '/',
         template_name="registration/register.html"
     ), name='django_registration_register'),
 
-    path('accounts/', include('django_registration.backends.one_step.urls'))
+    # path('accounts/', include('django_registration.backends.on_step.urls'))
+    path('accounts/', include('django_registration.backends.activation.urls'))
+
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,6 +1,10 @@
 from django.db import models
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, AbstractUser
+from django.core.mail import send_mail
+
+email_body = "templates/django_registration/activation_email.txt"
+email_subject = "templates/django_registration/activation_email_subject.txt"
 
 # Create your models here.
 class UserManager(BaseUserManager):
@@ -63,3 +67,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return f"{self.first_name}"
+        
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        send_mail(subject, message, from_email, [self.email], **kwargs)
