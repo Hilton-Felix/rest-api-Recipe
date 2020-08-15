@@ -55,7 +55,7 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
 
-
+    'webpack_loader',
 
     'crispy_forms',
 
@@ -191,3 +191,16 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('email')
 EMAIL_HOST_PASSWORD = os.environ.get('password')
+
+
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'dist/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'webpack-stats.json'),
+        # 'POLL_INTERVAL': 0.1,
+        # 'TIMEOUT': None,
+        # 'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+        # 'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
+    }
+} 
