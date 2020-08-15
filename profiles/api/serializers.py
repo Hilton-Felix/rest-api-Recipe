@@ -37,7 +37,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
-
+ 
 
 # Token Serializer(User Authentication)
 class AuthTokenSerializer(serializers.Serializer):
