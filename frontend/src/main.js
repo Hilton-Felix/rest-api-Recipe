@@ -5,10 +5,6 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
-import axios from "axios";
-
-axios.defaults.baseURL = "http://127.0.0.1:8000";
-
 new Vue({
   router,
   store,
