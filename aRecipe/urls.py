@@ -14,13 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 
 # from django_registration.backends.one_step.views import RegistrationView
 from django_registration.backends.activation.views import RegistrationView
+
 from profiles.forms import CustomUserForm
+
+from core.views import IndexTemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -53,7 +56,10 @@ urlpatterns = [
     ), name='django_registration_register'),
 
     # path('accounts/', include('django_registration.backends.on_step.urls'))
-    path('accounts/', include('django_registration.backends.activation.urls'))
+    path('accounts/', include('django_registration.backends.activation.urls')),
+
+
+    re_path(r"^.*$", IndexTemplateView.as_view(), name='entry-point'),
 
     
 
