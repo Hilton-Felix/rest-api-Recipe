@@ -38,6 +38,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'id',
             'user',
             'title',
+            'description',
             'price',
             'time_minutes',
             'likes',
