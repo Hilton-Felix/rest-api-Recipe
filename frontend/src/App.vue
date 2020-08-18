@@ -15,6 +15,8 @@ export default {
   },
   created() {
     this.$store.dispatch('loadRecipes')
+    this.$store.dispatch('getIngredients')
+    this.$store.dispatch('getTags')
   }
 }
 </script>

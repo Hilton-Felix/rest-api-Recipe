@@ -39,7 +39,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             'user',
             'title',
             'description',
-            'price',
             'time_minutes',
             'likes',
             'user_has_liked',
@@ -47,6 +46,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             'ingredients',
             'tags',
             'image',
+            'link',
             'created_at',
             'updated_at'
         )

@@ -4,7 +4,7 @@
          <div class="col-lg-8 offset-lg-2">
              <div class="card mb-3" @click="getRecipe(recipe.id)">
                     <div class="card-img-top">
-                        <img src="https://source.unsplash.com/random/1920x400/?food" class="img-fluid">                       
+                        <img src="https://source.unsplash.com/random/1920x400/?food" class="img-fluid rounded">                       
                     </div>  
                     <div class="card-header text-center">
                         <h2 class="text-muted mb-0">{{ recipe.title }}</h2>
@@ -16,6 +16,9 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="row mb-5">
+                            <a :href="recipe.link" target="_blank">
+                                 <h4><span class="badge bg-dark badge-pill text-light"><i class="fas fa-link text-light"></i> Visit link</span></h4>
+                            </a>
                             {{ recipe.description }}
                         </div>
                         <div class="row">
@@ -41,7 +44,7 @@
      </div>
      <div class="row">
          <div class="col-lg-8 offset-lg-2">
-            <small>Comments</small>
+            <small v-show="recipe.comments_count > 0">Comments</small><br>
             <div class="card mb-3" v-for="(comment, key) in recipeComments" :key="key">
                 <div class="card-body">
                     <small class="text-muted mb-2">{{ comment.user }} | {{ comment.created_at }}</small>
@@ -83,6 +86,9 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .card {
+        border-radius: 30px !important;
+        box-shadow: 0 2px 10px rgba(0,0,0, .3);
+    }
 </style>
