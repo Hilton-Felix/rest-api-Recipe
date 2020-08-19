@@ -3,6 +3,9 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 Vue.use(VueAxios, axios)
 
+// CSRF_TOKEN
+// import { CSRF_TOKEN } from '../csrf.js';
+
 const state ={
     recipes: [],
     recipe: {},
@@ -26,7 +29,6 @@ const mutations = {
     },
     GET_TAGS(state, data) {
         state.tags = data
-        console.log('tags', data)
     }
 }
 
@@ -79,7 +81,7 @@ const actions = {
                 commit('GET_TAGS', res.data.results)
             })
             .catch(err => console.log(err.response))
-    },
+    }
 }
 
 const getters = {

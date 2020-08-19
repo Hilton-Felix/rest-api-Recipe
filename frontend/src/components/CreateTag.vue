@@ -1,8 +1,8 @@
 <template>
     <div class="col-md-3">
-      <form>
+      <form @submit.prevent="createNewTag">
           <div class="input-group">
-            <input type="text" placeholder="Add an tag" class="form-control">
+            <input type="text" placeholder="Add an tag" class="form-control" v-model="tagInput">
             <div class="input-group-append">
               <button type="submit" class="btn btn-warning">Add</button>
             </div>  
@@ -19,7 +19,7 @@
              <h4 v-for="(tag, key) in tags" :key="key"   class="text-light float-right"><span class="badge badge-pill bg-dark">
                {{ tag.name }} 
                <span>
-                 <i class="fas fa-times-circle text-light delete-icon" @click="Clicked(tag.id)"></i></span>
+                 <i class="fas fa-times-circle text-light delete-icon" @click="revemoveTag(tag.id)"></i></span>
                  </span>
               </h4>
               
@@ -31,17 +31,50 @@
 </template>
 
 <script>
+import Vue from "vue";
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios)
+
+import { CSRF_TOKEN } from '../store/csrf.js';
 import { mapGetters } from 'vuex';
 
 
 export default {
+  data() {
+    return {
+      tagInput: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'tags'
     ])
   },
   methods: {
-    Clicked(id) {
+    createNewTag() {
+      axios({
+        url: 'api/recipe/tags/',
+        method: 'POST',
+        headers: {
+          "content-type": "application/json",
+          "X-CSRFTOKEN": CSRF_TOKEN
+        },
+        data: {
+          user: window.localStorage.getItem('username'),
+          name: this.tagInput
+        }
+      })
+    },
+    revemoveTag(id) {
+      axios({
+        url: `api/recipe/tags/${id}/`,
+        method: 'DELETE',
+        headers: {
+          "content-type": "application/json",
+          "X-CSRFTOKEN": CSRF_TOKEN
+        },
+      })
       console.log('clicked', id)
     }
   }

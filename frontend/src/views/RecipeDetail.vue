@@ -16,7 +16,7 @@
                     </div>
                     <div class="card-body p-4">
                         <div class="row mb-5">
-                            <a :href="recipe.link" target="_blank">
+                            <a v-show="recipe.link" :href="recipe.link" target="_blank">
                                  <h4><span class="badge bg-dark badge-pill text-light"><i class="fas fa-link text-light"></i> Visit link</span></h4>
                             </a>
                             {{ recipe.description }}

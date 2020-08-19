@@ -1,8 +1,8 @@
 <template>
   <div class="col-md-3">
-      <form>
+      <form  @submit.prevent="createNewIngredient">
           <div class="input-group">
-            <input type="text" placeholder="Add an ingredient" class="form-control">
+            <input type="text" placeholder="Add an ingredient" class="form-control" v-model="ingInput">
             <div class="input-group-append">
               <button type="submit" class="btn btn-warning">Add</button>
             </div>  
@@ -18,7 +18,7 @@
 
              <h4 v-for="(ingredient, key) in ingredients" :key="key"   class="text-light"><span class="badge badge-pill bg-dark">{{ ingredient.name }} 
                <span>
-                 <i class="fas fa-times-circle text-light delete-icon" @click="Clicked(ingredient.id)"></i></span>
+                 <i class="fas fa-times-circle text-light delete-icon" @click="removeIngredient(ingredient.id)"></i></span>
                  </span>
               </h4>
 
@@ -33,16 +33,49 @@
 import { mapGetters } from 'vuex';
 
 
+import Vue from "vue";
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(VueAxios, axios)
+
+import { CSRF_TOKEN } from '../store/csrf.js';
+
 
 export default {
+  data() {
+    return {
+      ingInput: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'ingredients'
     ])
   },
   methods: {
-    Clicked(id) {
-      console.log('clicked', id)
+    createNewIngredient() {
+     axios({
+       url: "api/recipe/ingredients/",
+       method: "POST",
+       headers: {
+          "content-type": "application/json",
+          "X-CSRFTOKEN": CSRF_TOKEN
+      },
+      data: {
+        user: window.localStorage.getItem('username'),
+        name: this.ingInput
+      }
+     })
+    },
+    removeIngredient(id) {
+		axios({
+			url: `api/recipe/ingredients/${id}/`,
+			method: 'DELETE',
+			 headers: {
+				"content-type": "application/json",
+				"X-CSRFTOKEN": CSRF_TOKEN
+			}
+		})
     }
   }
 
